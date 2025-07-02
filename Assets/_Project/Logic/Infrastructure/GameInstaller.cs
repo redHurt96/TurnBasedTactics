@@ -12,6 +12,7 @@ namespace _Project
         [SerializeField] private GridView _gridView;
         [SerializeField] private PlacesConfig _playersPlaces;
         [SerializeField] private PlacesConfig _enemiesPlaces;
+        [SerializeField] private SkipButton _skipButton;
 
         public override void InstallBindings()
         {
@@ -39,6 +40,8 @@ namespace _Project
             Container.BindInterfacesTo<SelectEventSubscriber>().AsSingle();
             Container.BindInterfacesTo<DeselectEventSubscriber>().AsSingle();
             Container.BindInterfacesTo<MoveEventSubscriber>().AsSingle();
+
+            Container.Bind<SkipButton>().FromInstance(_skipButton).AsSingle();
         }
     }
 }

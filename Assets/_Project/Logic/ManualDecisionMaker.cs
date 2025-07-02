@@ -11,23 +11,31 @@ namespace _Project
         private readonly GridView _gridView;
         private readonly MessagesQueue _messages;
         private readonly BreathFirstPathSolver _pathSolver;
+        private readonly SkipButton _skipButton;
 
-        public ManualDecisionMaker(GridView gridView, MessagesQueue messages, BreathFirstPathSolver pathSolver)
+        public ManualDecisionMaker(GridView gridView, MessagesQueue messages, BreathFirstPathSolver pathSolver, SkipButton skipButton)
         {
             _gridView = gridView;
             _messages = messages;
             _pathSolver = pathSolver;
+            _skipButton = skipButton;
         }
 
         public async UniTask<IDecision> Execute(Character source, CharactersRepository enemies)
         {
             CancellationTokenSource tokenSource = new();
-            UniTask<Vector2Int?> click = _gridView.WaitForClick(tokenSource.Token);
 
-            Vector2Int? result = await click;
+            (int index, Vector2Int? cell, bool _) = await UniTask.WhenAny(
+                _gridView.WaitForClick(tokenSource.Token),
+                _skipButton.WaitForClick(tokenSource.Token));
             
-            if (result.HasValue)
-                return CreateMoveDecision(source, result.Value);
+            tokenSource.Cancel();
+            
+            if (index == 0)
+                return CreateMoveDecision(source, cell.Value);
+
+            if (index == 1)
+                return CreateSkipDecision(source);
             
             return new ErrorDecision();
         }
@@ -37,5 +45,8 @@ namespace _Project
             List<Node> path = _pathSolver.Find(source.Position, result);
             return new MoveDecision(source, path, _messages);
         }
+
+        private IDecision CreateSkipDecision(Character source) => 
+            new SkipDecision(source);
     }
 }

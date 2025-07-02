@@ -45,8 +45,6 @@ namespace _Project
             {
                 bool freeAndCanReach = !node.IsOccupied && CanReachNode(forEnemy, node);
                 bool occupiedByTarget = node.IsOccupied && node.Occupant == forEnemy;
-                bool total = !node.IsOccupied && CanReachNode(forEnemy, node) 
-                             || node.IsOccupied && node.Occupant == forEnemy;
                 
                 if (freeAndCanReach || occupiedByTarget)
                 {
