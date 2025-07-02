@@ -7,15 +7,14 @@ namespace _Project
     {
         public Vector2Int Position;
         public Node[] Neighbours { get; set; }
-        
-        public bool IsOccupied => _item != null;
-        
-        private IGridItem _item;
+        public IGridItem Occupant { get; private set; }
+
+        public bool IsOccupied => Occupant != null;
 
         public void Occupy(IGridItem item) => 
-            _item = item;
+            Occupant = item;
 
         public void SetFree() => 
-            _item = null;
+            Occupant = null;
     }
 }

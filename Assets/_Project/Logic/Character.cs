@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using _Pathfinding.Common;
 using UnityEngine;
@@ -11,23 +12,28 @@ namespace _Project
         [field:SerializeField] public string Name { get; private set; }
         [field:SerializeField] public int Initiative { get; private set; }
         
-        public int Team { get; set; }
-        public Vector2Int Position { get; set; }
-        
-        private MessagesQueue _broker;
+        public int Team { get; private set; }
+        public Node Node { get; private set; }
+        public Vector2Int Position => Node.Position;
 
-        public Character Copy(MessagesQueue broker)
+        public Character Copy(int team, Node node)
         {
-            return new Character
+            Character copy = new()
             {
                 Name = Name,
                 Initiative = Initiative,
-                _broker = broker,
+                Team = team,
             };
+            copy.Move(node);
+            return copy;
         }
 
-        public void Move(Vector2Int path) => 
-            Position = path;
+        public void Move(Node target)
+        {
+            Node?.SetFree();
+            Node = target;
+            Node.Occupy(this);
+        }
 
         public bool IsEnemy(Character forCharacter) => 
             Team != forCharacter.Team;

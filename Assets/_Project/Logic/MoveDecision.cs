@@ -20,13 +20,7 @@ namespace _Project
 
         public UniTask Execute()
         {
-            _source.Move(_path.Last().Position);
-
-            if (_path.First() != _path.Last())
-            {
-                _path.First().SetFree();
-                _path.Last().Occupy(_source);
-            }
+            _source.Move(_path.Last());
 
             _messages.Enqueue(new MoveEvent
             {

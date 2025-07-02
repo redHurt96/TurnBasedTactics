@@ -12,8 +12,8 @@ namespace _Project
         private readonly GridView _gridView;
         private readonly CharactersRepository _players;
         private readonly CharactersRepository _enemies;
-        private readonly MessagesQueue _messagesQueue;
         private readonly CharactersViewMap _map;
+        private readonly IInstantiator _instantiator;
 
         public CharactersFactory(
             Grid grid, 
@@ -21,14 +21,15 @@ namespace _Project
             [Inject(Id = PLAYERS_REPOSITORY)] CharactersRepository players,
             [Inject(Id = ENEMIES_REPOSITORY)] CharactersRepository enemies, 
             MessagesQueue messagesQueue,
-            CharactersViewMap map)
+            CharactersViewMap map,
+            IInstantiator instantiator)
         {
             _grid = grid;
             _gridView = gridView;
             _players = players;
             _enemies = enemies;
-            _messagesQueue = messagesQueue;
             _map = map;
+            _instantiator = instantiator;
         }
 
         public void Place(PlacesConfig players, PlacesConfig enemies)
@@ -55,13 +56,10 @@ namespace _Project
             if (_grid.IsOccupied(position))
                 throw new($"Cell {position} already occupied");
 
-            Character character = characterConfig.Character.Copy(_messagesQueue);
-            character.Position = position;
-            character.Team = team;
+            Character character = characterConfig.Character.Copy(team, _grid.GetNode(position));
+            CharacterView view = _instantiator.InstantiatePrefabForComponent<CharacterView>(characterConfig.View);
             
-            CharacterView view = Instantiate(characterConfig.View, _gridView.GetPosition(position), Quaternion.identity);
-            
-            view.SetColor(color);
+            view.Setup(character, color, _gridView.GetPosition(position));
             view.gameObject.name = character.Name;
 
             _map.Register(character, view);

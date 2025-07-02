@@ -44,9 +44,9 @@ namespace _Project
                 (Type, object) pair = _messagesQueue.Messages.Dequeue();
                 
                 if (pair.Item1 == typeof(SelectEvent))
-                    _messageExecutor.Execute(pair.Item2 as SelectEvent);
+                    await _messageExecutor.Execute(pair.Item2 as SelectEvent);
                 else if (pair.Item1 == typeof(DeselectEvent))
-                    _messageExecutor.Execute(pair.Item2 as DeselectEvent);
+                    await _messageExecutor.Execute(pair.Item2 as DeselectEvent);
                 else if (pair.Item1 == typeof(MoveEvent))
                     await _messageExecutor.Execute(pair.Item2 as MoveEvent);
             }

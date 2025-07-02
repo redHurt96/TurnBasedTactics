@@ -42,12 +42,14 @@ namespace _Project
             }
         }
 
-        private void Select(Character current) =>
+        private void Select(Character current)
+        {
             _messagesQueue.Enqueue(new SelectEvent
             {
                 Character = current,
             });
-        
+        }
+
         private void Deselect(Character current) =>
             _messagesQueue.Enqueue(new DeselectEvent
             {

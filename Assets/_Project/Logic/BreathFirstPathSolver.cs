@@ -37,7 +37,7 @@ namespace _Pathfinding.Common
 
                 foreach (Node neighbor in current.Neighbours)
                 {
-                    if (!visited.Contains(neighbor))
+                    if (!visited.Contains(neighbor) && !neighbor.IsOccupied)
                     {
                         queue.Enqueue(neighbor);
                         visited.Add(neighbor);
@@ -70,5 +70,8 @@ namespace _Pathfinding.Common
 
             return path;
         }
+
+        public bool CanReach(Node from, Node to) => 
+            Find(from, to) != null;
     }
 }

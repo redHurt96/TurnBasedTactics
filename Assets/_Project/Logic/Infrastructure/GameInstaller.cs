@@ -35,6 +35,10 @@ namespace _Project
             
             Container.BindInterfacesAndSelfTo<ViewEventsManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<CoreEntryPoint>().AsSingle();
+
+            Container.BindInterfacesTo<SelectEventSubscriber>().AsSingle();
+            Container.BindInterfacesTo<DeselectEventSubscriber>().AsSingle();
+            Container.BindInterfacesTo<MoveEventSubscriber>().AsSingle();
         }
     }
 }
