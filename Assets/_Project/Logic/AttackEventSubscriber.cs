@@ -9,13 +9,9 @@ namespace _Project
         public AttackEventSubscriber(CharactersViewMap map) => 
             _map = map;
 
-        public UniTask Execute(AttackEvent @event)
-        {
-            _map
+        public async UniTask Execute(AttackEvent @event) =>
+            await _map
                 .Get(@event.Target)
                 .ShowAttack();
-            
-            return UniTask.CompletedTask;
-        }
     }
 }

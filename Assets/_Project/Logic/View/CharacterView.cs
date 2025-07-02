@@ -17,6 +17,7 @@ namespace _Project.View
         [SerializeField] private Renderer _renderer;
         [SerializeField] private GameObject _outline;
         [SerializeField] private GameObject _targetOutline;
+        [SerializeField] private GameObject _hitEffect;
         
         private BreathFirstPathSolver _pathSolver;
 
@@ -63,15 +64,17 @@ namespace _Project.View
             AttackSides.ForEach(x => x.Hide());
         }
 
-        public async UniTask Move(Vector3 to) => 
+        public async UniTask Move(Vector3[] path) =>
             await transform
-                .DOMove(to, .5f)
+                .DOPath(path, .5f, PathType.CatmullRom)
+                .SetEase(Ease.Linear) 
                 .AsyncWaitForCompletion()
                 .AsUniTask();
 
-        public void ShowAttack()
+        public async UniTask ShowAttack()
         {
-            Debug.Log("Show attack");
+            _hitEffect.SetActive(true);
+            await UniTask.Delay(500);
         }
 
         private void ShowAttackSide(Vector2Int direction) =>

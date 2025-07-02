@@ -18,10 +18,13 @@ namespace _Project
 
         public async UniTask Execute(MoveEvent @event)
         {
-            Vector3 target = _gridView.GetPosition(@event.Path.Last());
+            Vector3[] path = @event.Path
+                .Select(x => _gridView.GetPosition(x))
+                .ToArray();
+            
             await _map
                 .Get(@event.Character)
-                .Move(target);
+                .Move(path);
         }
     }
 }
