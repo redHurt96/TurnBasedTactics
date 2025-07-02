@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using _Pathfinding.Common;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -6,30 +7,26 @@ using Sirenix.Utilities;
 using UnityEngine;
 using Zenject;
 
-namespace _Project
+namespace _Project.View
 {
     public class CharacterView : MonoBehaviour
     {
-        private Character _character;
+        [field:SerializeField] public AttackSide[] AttackSides { get; private set; }
+        public Character Character { get; private set; }
         
         [SerializeField] private Renderer _renderer;
         [SerializeField] private GameObject _outline;
         [SerializeField] private GameObject _targetOutline;
-        [SerializeField] private AttackSide[] _attackSides;
         
-        private CharactersViewMap _charactersViewMap;
         private BreathFirstPathSolver _pathSolver;
 
         [Inject]
-        private void Construct(CharactersViewMap charactersViewMap, BreathFirstPathSolver pathSolver)
-        {
+        private void Construct(BreathFirstPathSolver pathSolver) => 
             _pathSolver = pathSolver;
-            _charactersViewMap = charactersViewMap;
-        }
 
         public void Setup(Character character, Color color, Vector3 position)
         {
-            _character = character;
+            Character = character;
             _renderer.material.color = color;
             transform.position = position;
         }
@@ -41,14 +38,14 @@ namespace _Project
         {
             _targetOutline.SetActive(true);
             
-            foreach (Node node in _character.Node.Neighbours)
+            foreach (Node node in Character.Node.Neighbours)
             {
                 bool freeAndCanReach = !node.IsOccupied && CanReachNode(forEnemy, node);
                 bool occupiedByTarget = node.IsOccupied && node.Occupant == forEnemy;
                 
                 if (freeAndCanReach || occupiedByTarget)
                 {
-                    Vector2Int direction = node.Position - _character.Position;
+                    Vector2Int direction = node.Position - Character.Position;
                     ShowAttackSide(direction);
                 }
             }
@@ -63,7 +60,7 @@ namespace _Project
         public void HideTargetOutline()
         {
             _targetOutline.SetActive(false);
-            _attackSides.ForEach(x => x.Hide());
+            AttackSides.ForEach(x => x.Hide());
         }
 
         public async UniTask Move(Vector3 to) => 
@@ -72,9 +69,24 @@ namespace _Project
                 .AsyncWaitForCompletion()
                 .AsUniTask();
 
+        public void ShowAttack()
+        {
+            Debug.Log("Show attack");
+        }
+
         private void ShowAttackSide(Vector2Int direction) =>
-            _attackSides
+            AttackSides
                 .First(x => x.Direction == direction)
                 .Show();
+
+        public async UniTask Die()
+        {
+            await transform
+                .DOScale(Vector3.zero, .5f)
+                .AsyncWaitForCompletion()
+                .AsUniTask();
+            
+            Destroy(gameObject);
+        }
     }
 }

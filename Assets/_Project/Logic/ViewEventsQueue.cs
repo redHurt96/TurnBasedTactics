@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace _Project
 {
-    public class MessagesQueue
+    public class ViewEventsQueue
     {
         public event Action Added;
         public readonly Queue<(Type, object)> Messages = new();

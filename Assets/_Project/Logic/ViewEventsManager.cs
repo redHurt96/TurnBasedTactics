@@ -8,24 +8,20 @@ namespace _Project
     {
         private bool _isRunning;
         
-        private readonly MessagesQueue _messagesQueue;
+        private readonly ViewEventsQueue _viewEventsQueue;
         private readonly MessageExecutor _messageExecutor;
 
-        public ViewEventsManager(MessagesQueue messagesQueue, MessageExecutor messageExecutor)
+        public ViewEventsManager(ViewEventsQueue viewEventsQueue, MessageExecutor messageExecutor)
         {
-            _messagesQueue = messagesQueue;
+            _viewEventsQueue = viewEventsQueue;
             _messageExecutor = messageExecutor;
         }
 
-        public void Initialize()
-        {
-            _messagesQueue.Added += TryRun;
-        }
+        public void Initialize() => 
+            _viewEventsQueue.Added += TryRun;
 
-        public void Dispose()
-        {
-            _messagesQueue.Added -= TryRun;
-        }
+        public void Dispose() => 
+            _viewEventsQueue.Added -= TryRun;
 
         private void TryRun()
         {
@@ -39,9 +35,9 @@ namespace _Project
         {
             _isRunning = true;
             
-            while (_messagesQueue.Messages.Any())
+            while (_viewEventsQueue.Messages.Any())
             {
-                (Type, object) pair = _messagesQueue.Messages.Dequeue();
+                (Type, object) pair = _viewEventsQueue.Messages.Dequeue();
                 
                 if (pair.Item1 == typeof(SelectEvent))
                     await _messageExecutor.Execute(pair.Item2 as SelectEvent);
@@ -49,6 +45,10 @@ namespace _Project
                     await _messageExecutor.Execute(pair.Item2 as DeselectEvent);
                 else if (pair.Item1 == typeof(MoveEvent))
                     await _messageExecutor.Execute(pair.Item2 as MoveEvent);
+                else if (pair.Item1 == typeof(AttackEvent))
+                    await _messageExecutor.Execute(pair.Item2 as AttackEvent);
+                else if (pair.Item1 == typeof(DieEvent))
+                    await _messageExecutor.Execute(pair.Item2 as DieEvent);
             }
             
             _isRunning = false;

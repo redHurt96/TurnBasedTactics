@@ -1,4 +1,5 @@
 ﻿using _Pathfinding.Common;
+using _Project.View;
 using UnityEngine;
 using Zenject;
 using static _Project.Constants;
@@ -20,7 +21,7 @@ namespace _Project
             GridView gridView, 
             [Inject(Id = PLAYERS_REPOSITORY)] CharactersRepository players,
             [Inject(Id = ENEMIES_REPOSITORY)] CharactersRepository enemies, 
-            MessagesQueue messagesQueue,
+            ViewEventsQueue viewEventsQueue,
             CharactersViewMap map,
             IInstantiator instantiator)
         {

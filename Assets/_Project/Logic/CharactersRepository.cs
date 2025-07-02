@@ -26,5 +26,8 @@ namespace _Project
 
         public bool Any() => 
             _characters.Any();
+
+        public void Remove(Character target) => 
+            _characters.Remove(target);
     }
 }

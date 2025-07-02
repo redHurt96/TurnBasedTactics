@@ -1,34 +1,35 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Cysharp.Threading.Tasks;
-using static Cysharp.Threading.Tasks.UniTask;
+using _Pathfinding.Common;
+using UnityEngine;
 
 namespace _Project
 {
     public class MoveDecision : IDecision
     {
         private readonly Character _source;
-        private readonly List<Node> _path;
-        private readonly MessagesQueue _messages;
+        private readonly Vector2Int _target;
+        private readonly BreathFirstPathSolver _pathSolver;
+        private readonly ViewEventsQueue _viewEvents;
 
-        public MoveDecision(Character source, List<Node> path, MessagesQueue messages)
+        public MoveDecision(Character source, Vector2Int target, BreathFirstPathSolver pathSolver, ViewEventsQueue viewEvents)
         {
             _source = source;
-            _path = path;
-            _messages = messages;
+            _target = target;
+            _pathSolver = pathSolver;
+            _viewEvents = viewEvents;
         }
 
-        public UniTask Execute()
+        public void Execute()
         {
-            _source.Move(_path.Last());
+            List<Node> path = _pathSolver.Find(_source.Position, _target);
+            _source.Move(path.Last());
 
-            _messages.Enqueue(new MoveEvent
+            _viewEvents.Enqueue(new MoveEvent
             {
                 Character = _source,
-                Path = _path,
+                Path = path,
             });
-            
-            return CompletedTask;
         }
     }
 }

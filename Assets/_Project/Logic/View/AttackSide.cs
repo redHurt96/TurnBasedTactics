@@ -1,19 +1,31 @@
-﻿using System;
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace _Project
+namespace _Project.View
 {
-    [Serializable]
-    public class AttackSide
+    public class AttackSide : MonoBehaviour
     {
         [field:SerializeField] public Vector2Int Direction { get; private set; }
         
-        [SerializeField] private GameObject _target;
+        private bool _clicked;
+
+        private void OnMouseDown() => 
+            _clicked = true;
 
         public void Show() => 
-            _target.SetActive(true);
+            gameObject.SetActive(true);
 
         public void Hide() => 
-            _target.SetActive(false);
+            gameObject.SetActive(false);
+
+        public async UniTask AwaitForClick(CancellationToken token)
+        {
+            _clicked = false;
+
+            await UniTask.WaitUntil(() => _clicked, cancellationToken: token);
+
+            _clicked = false;
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace _Project
         [Inject(Id = Constants.ENEMIES_REPOSITORY)] private CharactersRepository _enemies;
         [Inject] private Grid _grid;
         [Inject] private BreathFirstPathSolver _pathSolver;
-        [Inject] private MessagesQueue _messagesQueue;
+        [Inject] private ViewEventsQueue _viewEventsQueue;
         [Inject] private IDecisionMaker _decisionMaker;
         
         private Character _current;
@@ -36,7 +36,7 @@ namespace _Project
                 Select(_current);
 
                 IDecision move = await _decisionMaker.Execute(_current, currentEnemies);
-                await move.Execute();
+                move.Execute();
 
                 Deselect(_current);
             }
@@ -44,14 +44,14 @@ namespace _Project
 
         private void Select(Character current)
         {
-            _messagesQueue.Enqueue(new SelectEvent
+            _viewEventsQueue.Enqueue(new SelectEvent
             {
                 Character = current,
             });
         }
 
         private void Deselect(Character current) =>
-            _messagesQueue.Enqueue(new DeselectEvent
+            _viewEventsQueue.Enqueue(new DeselectEvent
             {
                 Character = current,
             });

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using _Project.View;
+using UnityEngine;
 
 namespace _Project
 {

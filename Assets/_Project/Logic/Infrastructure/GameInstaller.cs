@@ -3,7 +3,7 @@ using UnityEngine;
 using Zenject;
 using static _Project.Constants;
 
-namespace _Project
+namespace _Project.Infrastructure
 {
     public class GameInstaller : MonoInstaller
     {
@@ -27,11 +27,12 @@ namespace _Project
             Container.Bind<CharactersRepository>().WithId(ENEMIES_REPOSITORY).AsCached();
 
             Container.Bind<CharactersFactory>().AsSingle();
-            Container.Bind<MessagesQueue>().AsSingle();
+            Container.Bind<ViewEventsQueue>().AsSingle();
             Container.Bind<CharactersViewMap>().AsSingle();
             Container.Bind<GameLoop>().AsSingle();
             Container.Bind<MessageExecutor>().AsSingle();
             Container.Bind<BreathFirstPathSolver>().AsSingle();
+            Container.Bind<AttackClickAwaiter>().AsSingle();
             Container.BindInterfacesTo<ManualDecisionMaker>().AsSingle();
             
             Container.BindInterfacesAndSelfTo<ViewEventsManager>().AsSingle();
@@ -40,6 +41,8 @@ namespace _Project
             Container.BindInterfacesTo<SelectEventSubscriber>().AsSingle();
             Container.BindInterfacesTo<DeselectEventSubscriber>().AsSingle();
             Container.BindInterfacesTo<MoveEventSubscriber>().AsSingle();
+            Container.BindInterfacesTo<DieEventSubscriber>().AsSingle();
+            Container.BindInterfacesTo<AttackEventSubscriber>().AsSingle();
 
             Container.Bind<SkipButton>().FromInstance(_skipButton).AsSingle();
         }

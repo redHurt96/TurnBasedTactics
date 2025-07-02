@@ -96,6 +96,7 @@ namespace _Pathfinding.Common
         //     DropHighlight();
         // }
         //
+        
         private void OnMouseDown()
         {
             if (!_interactWithMouse)

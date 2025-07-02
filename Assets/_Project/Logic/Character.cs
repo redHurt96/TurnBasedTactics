@@ -11,10 +11,13 @@ namespace _Project
     {
         [field:SerializeField] public string Name { get; private set; }
         [field:SerializeField] public int Initiative { get; private set; }
+        [field:SerializeField] public int Damage { get; private set; }
+        [field:SerializeField] public int Health { get; private set; }
         
         public int Team { get; private set; }
         public Node Node { get; private set; }
         public Vector2Int Position => Node.Position;
+        public bool IsDead => Health <= 0;
 
         public Character Copy(int team, Node node)
         {
@@ -23,6 +26,8 @@ namespace _Project
                 Name = Name,
                 Initiative = Initiative,
                 Team = team,
+                Damage = Damage,
+                Health = Health,
             };
             copy.Move(node);
             return copy;
@@ -37,5 +42,10 @@ namespace _Project
 
         public bool IsEnemy(Character forCharacter) => 
             Team != forCharacter.Team;
+
+        public void TakeDamage(int damage)
+        {
+            Health = Mathf.Max(Health - damage, 0);
+        }
     }
 }

@@ -1,16 +1,9 @@
-﻿using Cysharp.Threading.Tasks;
-
-namespace _Project
+﻿namespace _Project
 {
     internal class SkipDecision : IDecision
     {
-        public SkipDecision(Character source)
+        public void Execute()
         {
-        }
-
-        public UniTask Execute()
-        {
-            return UniTask.CompletedTask;
         }
     }
 }

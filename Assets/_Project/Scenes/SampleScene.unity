@@ -903,6 +903,7 @@ MonoBehaviour:
   _gridView: {fileID: 866770504}
   _playersPlaces: {fileID: 11400000, guid: 0fd7c68ae62643346a58d09f9be77b9d, type: 2}
   _enemiesPlaces: {fileID: 11400000, guid: e61062ce22b1e5440bb68ca058587251, type: 2}
+  _skipButton: {fileID: 1301807807}
 --- !u!114 &1885575716
 MonoBehaviour:
   m_ObjectHideFlags: 0

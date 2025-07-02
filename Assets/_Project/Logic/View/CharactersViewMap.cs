@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using _Project.View;
 
 namespace _Project
 {
@@ -27,5 +28,8 @@ namespace _Project
             foreach (CharacterView view in _map.Values)
                 action(view);
         }
+
+        public void Remove(Character character) => 
+            _map.Remove(character);
     }
 }
