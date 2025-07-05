@@ -16,5 +16,7 @@ MonoBehaviour:
     <Name>k__BackingField: Test
     <Initiative>k__BackingField: 1
     <Damage>k__BackingField: 5
+    <AttackStamina>k__BackingField: 2
     <Health>k__BackingField: 10
+    <OriginStamina>k__BackingField: 5
   View: {fileID: 3759111375073112758, guid: 38274637548c10f44a6532482304f2da, type: 3}

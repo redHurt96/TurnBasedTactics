@@ -11,32 +11,39 @@ namespace _Project
         [Inject(Id = Constants.PLAYERS_REPOSITORY)] private CharactersRepository _players;
         [Inject(Id = Constants.ENEMIES_REPOSITORY)] private CharactersRepository _enemies;
         [Inject] private Grid _grid;
-        [Inject] private BreathFirstPathSolver _pathSolver;
+        [Inject] private IPathSolver _pathSolver;
         [Inject] private ViewEventsQueue _viewEventsQueue;
         [Inject] private IDecisionMaker _decisionMaker;
         
         private Character _current;
 
-        public async UniTask Run()
+        public async UniTask<int> Run()
         {
-            while (_players.Any() || _enemies.Any())
+            while (_players.Any() && _enemies.Any())
             {
                 await PlayQueue(_players, _enemies);
                 await PlayQueue(_enemies, _players);
             }
+            
+            return _players.Any() ? 0 : 1;
         }
 
         private async UniTask PlayQueue(CharactersRepository currentCharacters, CharactersRepository currentEnemies)
         {
             Queue<Character> queue = currentCharacters.GetInitiativeQueue();
 
-            while (queue.Any())
+            while (queue.Any() && currentEnemies.Any())
             {
                 _current = queue.Dequeue();
-                Select(_current);
+                _current.RestoreStamina();
 
-                IDecision move = await _decisionMaker.Execute(_current, currentEnemies);
-                move.Execute();
+                IDecision decision;
+                do
+                {
+                    Select(_current);
+                    decision = await _decisionMaker.Execute(_current, currentEnemies);
+                    decision.Execute();
+                } while (_current.Stamina > 0 && !_current.IsDead && decision is not SkipDecision);
 
                 Deselect(_current);
             }

@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using _Project;
+using _Pathfinding.Common;
 using Cysharp.Threading.Tasks;
-using Sirenix.OdinInspector;
 using UnityEngine;
+using Zenject;
 using static Cysharp.Threading.Tasks.UniTask;
-using Grid = _Project.Grid;
 
-namespace _Pathfinding.Common
+namespace _Project
 {
     public class GridView : MonoBehaviour
     {
@@ -17,10 +15,14 @@ namespace _Pathfinding.Common
         [SerializeField] private NodeView _prefab;
 
         private Coroutine _highlightCoroutine;
-        private readonly Queue<Node> _visitedNodes = new();
         private readonly List<NodeView> _nodes = new();
         private Grid _grid;
         private Vector2Int? _clickTarget;
+        private IPathSolver _pathSolver;
+
+        [Inject]
+        private void Construct(IPathSolver pathSolver) => 
+            _pathSolver = pathSolver;
 
         public void Create(Grid grid)
         {
@@ -37,28 +39,6 @@ namespace _Pathfinding.Common
                     _nodes.Add(nodeObject);
                 }
             }
-        }
-
-        public void Highlight(List<Node> path)
-        {
-            while (_visitedNodes.Count > 0)
-            {
-                Node node = _visitedNodes.Dequeue();
-                NodeView nodeView = _nodes.FirstOrDefault(n => n.Model == node);
-
-                nodeView!.HighlightAsVisited();
-
-                //yield return new WaitForSeconds(_highlightDelay);
-            }
-
-            foreach (Node node in path)
-            {
-                NodeView nodeView = _nodes.FirstOrDefault(n => n.Model == node);
-
-                nodeView!.HighlightAsPath();
-            }
-
-            _highlightCoroutine = null;
         }
 
         private void SetupNode(NodeView nodeObject, int x, int y, Node model = null)
@@ -79,16 +59,6 @@ namespace _Pathfinding.Common
         private void InvokeClick(NodeView nodeView)
         {
             _clickTarget = nodeView.Model.Position;
-        }
-
-        [Button]
-        private void DropHighLights()
-        {
-            foreach (NodeView node in _nodes)
-            {
-                node.DropHighlight();
-                node.EnableMouse();
-            }
         }
 
         public Vector3 GetPosition(Vector2Int index) =>
@@ -114,6 +84,17 @@ namespace _Pathfinding.Common
                 true => null,
                 _ => _clickTarget
             };
+        }
+
+        public void HighlightAvailableCells(Character source)
+        {
+            foreach (NodeView node in _nodes)
+            {
+                if (_pathSolver.CanReach(source.Node, node.Model, source.Stamina))
+                    node.HighlightAsAvailable();
+                else
+                    node.Disable();
+            }
         }
     }
 }

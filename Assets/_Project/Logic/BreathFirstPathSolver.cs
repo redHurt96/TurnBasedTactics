@@ -1,26 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using _Project;
+﻿using System.Collections.Generic;
+using _Pathfinding.Common;
 using UnityEngine;
-using Grid = _Project.Grid;
 
-namespace _Pathfinding.Common
+namespace _Project
 {
-    public class BreathFirstPathSolver
+    public class BreathFirstPathSolver : IPathSolver
     {
         private readonly Grid _grid;
-        public event Action<Node> CellVisited;
 
-        public BreathFirstPathSolver(Grid grid)
-        {
+        public BreathFirstPathSolver(Grid grid) => 
             _grid = grid;
+
+        public Path Find(Vector2Int from, Vector2Int to) =>
+            Find(_grid.GetNode(from), _grid.GetNode(to));
+
+        public bool CanReach(Node from, Node to, int withStamina, out Path path)
+        {
+            path = Find(from, to);
+            return !path.IsEmpty && path.Stamina <= withStamina;
         }
 
-        public List<Node> Find(Vector2Int from, Vector2Int to) =>
-            Find(_grid.GetNode(from), _grid.GetNode(to));
-        
-        public List<Node> Find(Node start, Node end)
+        public bool CanReach(Node from, Node to, int withStamina)
         {
+            Path path = Find(from, to);
+            return !path.IsEmpty && path.Stamina <= withStamina;
+        }
+
+        private Path ReconstructPath(Dictionary<Node, Node> cameFrom, Node start, Node end)
+        {
+            List<Node> nodes = new();
+            Node current = end;
+
+            while (current != start)
+            {
+                nodes.Add(current);
+                current = cameFrom[current];
+            }
+
+            nodes.Add(start);
+            nodes.Reverse();
+
+            return new Path(nodes);
+        }
+
+        private Path Find(Node start, Node end)
+        {
+            if (start == end)
+                return Path.Empty;
+            
             Queue<Node> queue = new();
             HashSet<Node> visited = new();
             Dictionary<Node, Node> cameFrom = new();
@@ -41,37 +68,12 @@ namespace _Pathfinding.Common
                     {
                         queue.Enqueue(neighbor);
                         visited.Add(neighbor);
-                        CellVisited?.Invoke(neighbor);
                         cameFrom[neighbor] = current;
                     }
-
-                    if (neighbor == end)
-                        return ReconstructPath(cameFrom, start, end);
                 }
             }
 
-            Debug.Log("No path found.");
-            return null;
+            return Path.Empty;
         }
-
-        private List<Node> ReconstructPath(Dictionary<Node, Node> cameFrom, Node start, Node end)
-        {
-            List<Node> path = new();
-            Node current = end;
-
-            while (current != start)
-            {
-                path.Add(current);
-                current = cameFrom[current];
-            }
-
-            path.Add(start);
-            path.Reverse();
-
-            return path;
-        }
-
-        public bool CanReach(Node from, Node to) => 
-            Find(from, to) != null;
     }
 }

@@ -2,10 +2,12 @@
 {
     public class AttackEvent
     {
+        public readonly Character Source;
         public readonly Character Target;
 
-        public AttackEvent(Character target)
+        public AttackEvent(Character source, Character target)
         {
+            Source = source;
             Target = target;
         }
     }

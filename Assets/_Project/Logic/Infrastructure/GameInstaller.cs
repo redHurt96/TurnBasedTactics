@@ -13,6 +13,7 @@ namespace _Project.Infrastructure
         [SerializeField] private PlacesConfig _playersPlaces;
         [SerializeField] private PlacesConfig _enemiesPlaces;
         [SerializeField] private SkipButton _skipButton;
+        [SerializeField] private GameOverUi _gameOverUi;
 
         public override void InstallBindings()
         {
@@ -31,20 +32,21 @@ namespace _Project.Infrastructure
             Container.Bind<CharactersViewMap>().AsSingle();
             Container.Bind<GameLoop>().AsSingle();
             Container.Bind<MessageExecutor>().AsSingle();
-            Container.Bind<BreathFirstPathSolver>().AsSingle();
+            Container.BindInterfacesTo<BreathFirstPathSolver>().AsSingle();
             Container.Bind<AttackClickAwaiter>().AsSingle();
             Container.BindInterfacesTo<ManualDecisionMaker>().AsSingle();
             
             Container.BindInterfacesAndSelfTo<ViewEventsManager>().AsSingle();
-            Container.BindInterfacesAndSelfTo<CoreEntryPoint>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EntryPoint>().AsSingle();
 
-            Container.BindInterfacesTo<SelectEventSubscriber>().AsSingle();
-            Container.BindInterfacesTo<DeselectEventSubscriber>().AsSingle();
-            Container.BindInterfacesTo<MoveEventSubscriber>().AsSingle();
-            Container.BindInterfacesTo<DieEventSubscriber>().AsSingle();
-            Container.BindInterfacesTo<AttackEventSubscriber>().AsSingle();
+            Container.BindInterfacesTo<SelectEventExecutor>().AsSingle();
+            Container.BindInterfacesTo<DeselectEventExecutor>().AsSingle();
+            Container.BindInterfacesTo<MoveEventExecutor>().AsSingle();
+            Container.BindInterfacesTo<DieEventExecutor>().AsSingle();
+            Container.BindInterfacesTo<AttackEventExecutor>().AsSingle();
 
             Container.Bind<SkipButton>().FromInstance(_skipButton).AsSingle();
+            Container.Bind<GameOverUi>().FromInstance(_gameOverUi).AsSingle();
         }
     }
 }

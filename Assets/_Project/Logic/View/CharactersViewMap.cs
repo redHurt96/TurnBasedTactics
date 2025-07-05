@@ -7,12 +7,19 @@ namespace _Project
     public class CharactersViewMap
     {
         private readonly Dictionary<Character, CharacterView> _map = new();
+        private readonly Dictionary<Character, CharacterUiView> _uiMap = new();
 
-        public void Register(Character character, CharacterView view) => 
+        public void Register(Character character, CharacterView view, CharacterUiView uiView)
+        {
             _map.Add(character, view);
+            _uiMap.Add(character, uiView);
+        }
 
         public CharacterView Get(Character character) => 
             _map[character];
+        
+        public CharacterUiView GetUi(Character character) => 
+            _uiMap[character];
 
         public IEnumerable<CharacterView> GetEnemies(Character forCharacter)
         {
@@ -29,7 +36,10 @@ namespace _Project
                 action(view);
         }
 
-        public void Remove(Character character) => 
+        public void Remove(Character character)
+        {
             _map.Remove(character);
+            _uiMap.Remove(character);
+        }
     }
 }

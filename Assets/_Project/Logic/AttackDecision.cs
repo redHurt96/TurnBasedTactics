@@ -15,7 +15,7 @@ namespace _Project
             Character source, 
             Character target, 
             Vector2Int direction, 
-            BreathFirstPathSolver pathSolver, 
+            IPathSolver pathSolver, 
             ViewEventsQueue viewEvents,
             CharactersRepository enemies)
         {
@@ -29,8 +29,8 @@ namespace _Project
         public void Execute()
         {
             _moveDecision.Execute();
-            _target.TakeDamage(_source.Damage);
-            _viewEvents.Enqueue(new AttackEvent(_target));
+            _source.Attack(_target);
+            _viewEvents.Enqueue(new AttackEvent(_source, _target));
             
             if (_target.IsDead)
             {

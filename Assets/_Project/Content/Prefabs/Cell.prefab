@@ -100,30 +100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba04e15f8bb7437eb2646c8167c67c22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  X: 0
-  Y: 0
-  _scaleDuration: 0.5
-  _scaleEasing: 0
-  _moveDuration: 0.8
-  _shiftYCoefficient: 0.2
-  _hoverDuration: 0.2
-  _hoverScaleCoefficient: 1.2
-  _hoverScaleEasing: 6
-  _hoverColorEasing: 6
-  _hoverColor: {r: 1, g: 1, b: 1, a: 1}
-  _visitedDuration: 0.2
-  _visitedScaleCoefficient: 1.2
-  _visitedYShift: 0.1
-  _visitedYShiftEasing: 6
-  _visitedScaleEasing: 6
-  _visitedColorEasing: 6
-  _visitedColor: {r: 1, g: 1, b: 1, a: 1}
-  _pathDuration: 0.2
-  _pathScaleCoefficient: 1.2
-  _pathScaleEasing: 6
-  _pathColorEasing: 6
-  _pathColor: {r: 1, g: 1, b: 1, a: 1}
-  _interactWithMouse: 1
+  _availableColor: {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 1}
+  _defaultColor: {r: 0.34576356, g: 0.6981132, b: 0.4011576, a: 1}
 --- !u!65 &4633500765336681080
 BoxCollider:
   m_ObjectHideFlags: 0

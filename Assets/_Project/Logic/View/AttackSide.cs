@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using static Cysharp.Threading.Tasks.UniTask;
 
 namespace _Project.View
 {
@@ -8,10 +9,18 @@ namespace _Project.View
     {
         [field:SerializeField] public Vector2Int Direction { get; private set; }
         
+        [SerializeField] private GameObject _arrow;
+        
         private bool _clicked;
 
         private void OnMouseDown() => 
             _clicked = true;
+
+        private void OnMouseEnter() => 
+            _arrow.SetActive(true);
+
+        private void OnMouseExit() =>
+            _arrow.SetActive(false);
 
         public void Show() => 
             gameObject.SetActive(true);
@@ -23,7 +32,7 @@ namespace _Project.View
         {
             _clicked = false;
 
-            await UniTask.WaitUntil(() => _clicked, cancellationToken: token);
+            await WaitUntil(() => _clicked, cancellationToken: token);
 
             _clicked = false;
         }

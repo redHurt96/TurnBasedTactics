@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
 using _Pathfinding.Common;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -14,47 +13,22 @@ namespace _Project.View
         [field:SerializeField] public AttackSide[] AttackSides { get; private set; }
         public Character Character { get; private set; }
         
-        [SerializeField] private Renderer _renderer;
+        [SerializeField] private Renderer[] _renderers;
+        [SerializeField] private Transform _modelRoot;
         [SerializeField] private GameObject _outline;
         [SerializeField] private GameObject _targetOutline;
         [SerializeField] private GameObject _hitEffect;
         
-        private BreathFirstPathSolver _pathSolver;
-
-        [Inject]
-        private void Construct(BreathFirstPathSolver pathSolver) => 
-            _pathSolver = pathSolver;
-
         public void Setup(Character character, Color color, Vector3 position)
         {
             Character = character;
-            _renderer.material.color = color;
+            _renderers.ForEach(x => x.material.color = color);
             transform.position = position;
         }
 
         public void ShowOutline() => 
             _outline.SetActive(true);
         
-        public void ShowAsTarget(Character forEnemy)
-        {
-            _targetOutline.SetActive(true);
-            
-            foreach (Node node in Character.Node.Neighbours)
-            {
-                bool freeAndCanReach = !node.IsOccupied && CanReachNode(forEnemy, node);
-                bool occupiedByTarget = node.IsOccupied && node.Occupant == forEnemy;
-                
-                if (freeAndCanReach || occupiedByTarget)
-                {
-                    Vector2Int direction = node.Position - Character.Position;
-                    ShowAttackSide(direction);
-                }
-            }
-        }
-
-        private bool CanReachNode(Character forEnemy, Node node) => 
-            _pathSolver.CanReach(forEnemy.Node, node);
-
         public void HideOutline() => 
             _outline.SetActive(false);
 
@@ -64,12 +38,28 @@ namespace _Project.View
             AttackSides.ForEach(x => x.Hide());
         }
 
-        public async UniTask Move(Vector3[] path) =>
-            await transform
-                .DOPath(path, .5f, PathType.CatmullRom)
-                .SetEase(Ease.Linear) 
+        public async UniTask Move(Vector3[] path)
+        {
+            Tween tween = transform
+                .DOPath(path, 0.5f, PathType.CatmullRom)
+                .SetEase(Ease.Linear)
+                .OnWaypointChange(index =>
+                {
+                    if (index + 1 >= path.Length)
+                        return;
+
+                    Vector3 direction = path[index + 1] - path[index];
+                    if (direction != Vector3.zero)
+                    {
+                        Quaternion targetRotation = Quaternion.LookRotation(direction);
+                        _modelRoot.rotation = targetRotation;
+                    }
+                });
+
+            await tween
                 .AsyncWaitForCompletion()
                 .AsUniTask();
+        }
 
         public async UniTask ShowAttack()
         {
@@ -77,7 +67,7 @@ namespace _Project.View
             await UniTask.Delay(500);
         }
 
-        private void ShowAttackSide(Vector2Int direction) =>
+        public void ShowAttackSide(Vector2Int direction) =>
             AttackSides
                 .First(x => x.Direction == direction)
                 .Show();
@@ -91,5 +81,11 @@ namespace _Project.View
             
             Destroy(gameObject);
         }
+
+        public async UniTask Rotate(CharacterView toTarget) =>
+            await _modelRoot
+                .DOLookAt(toTarget.transform.position, .5f)
+                .AsyncWaitForCompletion()
+                .AsUniTask();
     }
 }

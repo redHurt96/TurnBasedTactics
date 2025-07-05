@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf7219bab7fe46a1ad266029b2fee19, type: 3}
+  m_Name: Readme
+  m_EditorClassIdentifier: 
+  icon: {fileID: 2800000, guid: 407619c5c19a54982b3880b5a085c597, type: 3}
+  iconMaxWidth: 192
+  title: Mini Fantasy Characters Pack
+  sections:
+  - heading: About
+    text: Thank you for purchasing the Mini Fantasy Characters asset. These lowpoly
+      stylized characters are ideal to build your game.
+    linkText: 
+    url: 
+  - heading: Optimization
+    text: "These characters are extremely light and can be used in both pc and mobile
+      games. All characters share the same texture file (1024x1024px). \nYou can
+      create different  materials and offset the texture to change the colors. It's
+      also included in this project image  masks for the characters clothes and skin
+      color, this way you can edit the colors or use a shader with image masks to
+      select your desired colors"
+    linkText: 
+    url: 
+  - heading: PolyCount
+    text: "Archer | 7k Tris \nWarrior | 5k Tris \nMage | 5k Tris \nWitch | 4k Tris"
+    linkText: 
+    url: 
+  - heading: BlendShapes
+    text: "Eyes Blink \nEyes Surprise \nMouth Small \nMouth Open \nMouth Angry \nMouth
+      Smile \nMouth Surprise \nEyebrows Up \nEyebrows Down \nEyebrows Surprise \nEyebrows
+      Angry"
+    linkText: 
+    url: 
+  - heading: Rig
+    text: "Rigged/Skinned \nMecanim Ready"
+    linkText: 
+    url: 
+  - heading: Contact/Support
+    text: 
+    linkText: Asset Store Profile
+    url: https://assetstore.unity.com/publishers/20594
+  - heading: 
+    text: "NOTE* This model has no animations included \n\nDon't forget to leave
+      your review!"
+    linkText: 
+    url: 
+  loadedLayout: 1

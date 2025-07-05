@@ -12,7 +12,7 @@ namespace _Project
         public async UniTask Execute<T>(T @event)
         {
             foreach (IEventSubscriber subscriber in _subscribers)
-                if (subscriber is IEventSubscriber<T> exactSubscriber)
+                if (subscriber is IEventExecutor<T> exactSubscriber)
                     await exactSubscriber.Execute(@event);
         }
     }

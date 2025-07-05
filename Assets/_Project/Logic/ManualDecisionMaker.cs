@@ -9,14 +9,14 @@ namespace _Project
     {
         private readonly GridView _gridView;
         private readonly ViewEventsQueue _viewEvents;
-        private readonly BreathFirstPathSolver _pathSolver;
+        private readonly IPathSolver _pathSolver;
         private readonly SkipButton _skipButton;
         private readonly AttackClickAwaiter _attackAwaiter;
 
         public ManualDecisionMaker(
             GridView gridView, 
             ViewEventsQueue viewEvents, 
-            BreathFirstPathSolver pathSolver, 
+            IPathSolver pathSolver, 
             SkipButton skipButton,
             AttackClickAwaiter attackAwaiter)
         {

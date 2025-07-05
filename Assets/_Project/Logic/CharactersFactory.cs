@@ -59,11 +59,13 @@ namespace _Project
 
             Character character = characterConfig.Character.Copy(team, _grid.GetNode(position));
             CharacterView view = _instantiator.InstantiatePrefabForComponent<CharacterView>(characterConfig.View);
+            CharacterUiView uiView = view.GetComponentInChildren<CharacterUiView>();
             
             view.Setup(character, color, _gridView.GetPosition(position));
+            uiView.Setup(character);
             view.gameObject.name = character.Name;
 
-            _map.Register(character, view);
+            _map.Register(character, view, uiView);
             
             return character;
         }
