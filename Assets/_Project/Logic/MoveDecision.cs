@@ -1,37 +1,25 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using _Pathfinding.Common;
-using UnityEngine;
-
-namespace _Project
+﻿namespace _Project
 {
     public class MoveDecision : IDecision
     {
         private readonly Character _source;
-        private readonly Vector2Int _target;
-        private readonly IPathSolver _pathSolver;
+        private readonly Path _path;
         private readonly ViewEventsQueue _viewEvents;
 
-        public MoveDecision(Character source, Vector2Int target, IPathSolver pathSolver, ViewEventsQueue viewEvents)
+        public MoveDecision(Character source, Path path, ViewEventsQueue viewEvents)
         {
             _source = source;
-            _target = target;
-            _pathSolver = pathSolver;
+            _path = path;
             _viewEvents = viewEvents;
         }
 
         public void Execute()
         {
-            if (_source.Position == _target)
-                return;
-            
-            Path path = _pathSolver.Find(_source.Position, _target);
-            _source.Move(path);
-
+            _source.Move(_path);
             _viewEvents.Enqueue(new MoveEvent
             {
                 Character = _source,
-                Path = path,
+                Path = _path,
             });
         }
     }

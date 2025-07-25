@@ -35,7 +35,7 @@ namespace _Project
             while (queue.Any() && currentEnemies.Any())
             {
                 _current = queue.Dequeue();
-                _current.RestoreStamina();
+                RestoreStamina();
 
                 IDecision decision;
                 do
@@ -47,6 +47,15 @@ namespace _Project
 
                 Deselect(_current);
             }
+        }
+
+        private void RestoreStamina()
+        {
+            _current.RestoreStamina();
+            _viewEventsQueue.Enqueue(new RestoreStaminaEvent()
+            {
+                Character = _current,
+            });
         }
 
         private void Select(Character current)

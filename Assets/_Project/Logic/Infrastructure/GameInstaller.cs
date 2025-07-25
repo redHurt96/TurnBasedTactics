@@ -31,6 +31,7 @@ namespace _Project.Infrastructure
             Container.Bind<ViewEventsQueue>().AsSingle();
             Container.Bind<CharactersViewMap>().AsSingle();
             Container.Bind<GameLoop>().AsSingle();
+            Container.Bind<AiAssistant>().AsSingle();
             Container.Bind<MessageExecutor>().AsSingle();
             Container.BindInterfacesTo<BreathFirstPathSolver>().AsSingle();
             Container.Bind<AttackClickAwaiter>().AsSingle();
@@ -40,6 +41,7 @@ namespace _Project.Infrastructure
             Container.BindInterfacesAndSelfTo<EntryPoint>().AsSingle();
 
             Container.BindInterfacesTo<SelectEventExecutor>().AsSingle();
+            Container.BindInterfacesTo<RestoreStaminaEventExecutor>().AsSingle();
             Container.BindInterfacesTo<DeselectEventExecutor>().AsSingle();
             Container.BindInterfacesTo<MoveEventExecutor>().AsSingle();
             Container.BindInterfacesTo<DieEventExecutor>().AsSingle();

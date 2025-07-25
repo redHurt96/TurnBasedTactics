@@ -7,8 +7,9 @@ namespace _Project
 {
     public class CharactersRepository
     {
+        public IEnumerable<Character> All => _characters;
         private readonly List<Character> _characters = new();
-        
+
         public void Register(Character player) =>
             _characters.Add(player);
 

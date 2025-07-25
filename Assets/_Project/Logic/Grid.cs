@@ -6,7 +6,7 @@ namespace _Project
     {
         public int Width { get; }
         public int Height { get; }
-        private Node[,] Nodes { get; }
+        internal Node[,] Nodes { get; }
 
         public Grid(int width, int height)
         {

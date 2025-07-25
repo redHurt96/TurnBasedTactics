@@ -39,13 +39,19 @@ namespace _Project
             
             tokenSource.Cancel();
 
-            return index switch
+            switch (index)
             {
-                0 => new MoveDecision(source, cell.Value, _pathSolver, _viewEvents),
-                1 => new SkipDecision(),
-                2 => new AttackDecision(source, target.Item1, target.Item2, _pathSolver, _viewEvents, enemies),
-                _ => new ErrorDecision()
-            };
+                case 0:
+                    Path path = _pathSolver.Find(source.Position, cell.Value);
+                    return new MoveDecision(source, path, _viewEvents);
+                case 1:
+                    return new SkipDecision();
+                case 2:
+                    path = _pathSolver.Find(source.Position, target.Item1.Position + target.Item2);
+                    return new AttackDecision(source, target.Item1, path, _viewEvents, enemies);
+                default:
+                    return new ErrorDecision();
+            }
         }
     }
 }
