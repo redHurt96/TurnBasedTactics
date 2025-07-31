@@ -49,6 +49,8 @@ namespace _Project
                     await _messageExecutor.Execute(pair.Item2 as AttackEvent);
                 else if (pair.Item1 == typeof(DieEvent))
                     await _messageExecutor.Execute(pair.Item2 as DieEvent);
+                else if (pair.Item1 == typeof(RestoreStaminaEvent))
+                    await _messageExecutor.Execute(pair.Item2 as RestoreStaminaEvent);
             }
             
             _isRunning = false;

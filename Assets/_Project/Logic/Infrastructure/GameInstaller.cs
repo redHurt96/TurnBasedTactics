@@ -14,9 +14,12 @@ namespace _Project.Infrastructure
         [SerializeField] private PlacesConfig _enemiesPlaces;
         [SerializeField] private SkipButton _skipButton;
         [SerializeField] private GameOverUi _gameOverUi;
+        [SerializeField] private DecisionMakersMap _decisionMakersMap;
 
         public override void InstallBindings()
         {
+            Container.Bind<DecisionMakersMap>().FromInstance(_decisionMakersMap).AsSingle();
+            
             Container.Bind<GridGenerator>().AsSingle().WithArguments(_x, _y);
             Container.Bind<Grid>().FromIFactory(x => x.To<GridGenerator>().FromResolve()).AsSingle();
             Container.Bind<GridView>().FromInstance(_gridView).AsSingle();
@@ -31,15 +34,13 @@ namespace _Project.Infrastructure
             Container.Bind<ViewEventsQueue>().AsSingle();
             Container.Bind<CharactersViewMap>().AsSingle();
             Container.Bind<GameLoop>().AsSingle();
-            Container.Bind<AiAssistant>().AsSingle();
+            Container.Bind<AiDecisionsGatherService>().AsSingle();
             Container.Bind<MessageExecutor>().AsSingle();
             Container.BindInterfacesTo<BreathFirstPathSolver>().AsSingle();
             Container.Bind<AttackClickAwaiter>().AsSingle();
             Container.BindInterfacesTo<ManualDecisionMaker>().AsSingle();
-            
+            Container.BindInterfacesTo<AiRandomDecisionMaker>().AsSingle();
             Container.BindInterfacesAndSelfTo<ViewEventsManager>().AsSingle();
-            Container.BindInterfacesAndSelfTo<EntryPoint>().AsSingle();
-
             Container.BindInterfacesTo<SelectEventExecutor>().AsSingle();
             Container.BindInterfacesTo<RestoreStaminaEventExecutor>().AsSingle();
             Container.BindInterfacesTo<DeselectEventExecutor>().AsSingle();
@@ -49,6 +50,8 @@ namespace _Project.Infrastructure
 
             Container.Bind<SkipButton>().FromInstance(_skipButton).AsSingle();
             Container.Bind<GameOverUi>().FromInstance(_gameOverUi).AsSingle();
+            
+            Container.BindInterfacesAndSelfTo<EntryPoint>().AsSingle();
         }
     }
 }

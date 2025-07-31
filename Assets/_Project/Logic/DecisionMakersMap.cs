@@ -1,12 +1,12 @@
-﻿namespace _Project
+﻿using System.Collections.Generic;
+using Sirenix.OdinInspector;
+using UnityEngine;
+
+namespace _Project
 {
-    public class DecisionMakersMap
+    [CreateAssetMenu(menuName = "Create DecisionMakersMap", fileName = "DecisionMakersMap", order = 0)]
+    public class DecisionMakersMap : SerializedScriptableObject
     {
-        
-        
-        public IDecisionMaker Get(int team)
-        {
-            return null;
-        }
+        public Dictionary<int, DecisionMakerType> DecisionMakers = new();
     }
 }
