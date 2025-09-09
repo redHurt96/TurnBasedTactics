@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using static Cysharp.Threading.Tasks.UniTask;
 
@@ -22,19 +23,23 @@ namespace _Project.View
         private void OnMouseExit() =>
             _arrow.SetActive(false);
 
-        public void Show() => 
-            gameObject.SetActive(true);
-
-        public void Hide() => 
-            gameObject.SetActive(false);
-
         public async UniTask AwaitForClick(CancellationToken token)
         {
             _clicked = false;
+            Show();
 
             await WaitUntil(() => _clicked, cancellationToken: token);
 
+            Hide();
             _clicked = false;
         }
+
+        [Button]
+        private void Show() => 
+            gameObject.SetActive(true);
+
+        [Button]
+        private void Hide() => 
+            gameObject.SetActive(false);
     }
 }

@@ -32,11 +32,8 @@ namespace _Project.View
         public void HideOutline() => 
             _outline.SetActive(false);
 
-        public void HideTargetOutline()
-        {
+        public void HideTargetOutline() => 
             _targetOutline.SetActive(false);
-            AttackSides.ForEach(x => x.Hide());
-        }
 
         public async UniTask Move(Vector3[] path)
         {
@@ -66,11 +63,6 @@ namespace _Project.View
             _hitEffect.SetActive(true);
             await UniTask.Delay(500);
         }
-
-        public void ShowAttackSide(Vector2Int direction) =>
-            AttackSides
-                .First(x => x.Direction == direction)
-                .Show();
 
         public async UniTask Die()
         {

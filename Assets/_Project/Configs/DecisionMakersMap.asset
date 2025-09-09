@@ -21,10 +21,10 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: DecisionMakers
+    - Name: DecisionMakersPerType
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[_Project.DecisionMakerType,
-        Assembly-CSharp]], mscorlib
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[System.Type,
+        mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
       Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.Int32,
@@ -42,8 +42,14 @@ MonoBehaviour:
       Entry: 3
       Data: 0
     - Name: $v
-      Entry: 3
-      Data: 0
+      Entry: 7
+      Data: 2|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: _Project.ManualDecisionMaker, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -54,8 +60,14 @@ MonoBehaviour:
       Entry: 3
       Data: 1
     - Name: $v
-      Entry: 3
-      Data: 1
+      Entry: 7
+      Data: 3|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: _Project.AiRandomDecisionMaker, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 8
       Data: 

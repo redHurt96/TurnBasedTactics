@@ -19,6 +19,7 @@ namespace _Project.Infrastructure
         public override void InstallBindings()
         {
             Container.Bind<DecisionMakersMap>().FromInstance(_decisionMakersMap).AsSingle();
+            Container.Bind<DecisionMakersMapper>().AsSingle();
             
             Container.Bind<GridGenerator>().AsSingle().WithArguments(_x, _y);
             Container.Bind<Grid>().FromIFactory(x => x.To<GridGenerator>().FromResolve()).AsSingle();
@@ -27,8 +28,8 @@ namespace _Project.Infrastructure
             Container.Bind<PlacesConfig>().WithId(PLAYERS_PLACES_CONFIG).FromInstance(_playersPlaces).AsCached();
             Container.Bind<PlacesConfig>().WithId(ENEMIES_PLACES_CONFIG).FromInstance(_enemiesPlaces).AsCached();
 
-            Container.Bind<CharactersRepository>().WithId(PLAYERS_REPOSITORY).AsCached();
-            Container.Bind<CharactersRepository>().WithId(ENEMIES_REPOSITORY).AsCached();
+            Container.Bind<CharactersRepository>().WithId(PLAYERS_REPOSITORY).AsCached().WithArguments(0);
+            Container.Bind<CharactersRepository>().WithId(ENEMIES_REPOSITORY).AsCached().WithArguments(1);
 
             Container.Bind<CharactersFactory>().AsSingle();
             Container.Bind<ViewEventsQueue>().AsSingle();
@@ -41,6 +42,7 @@ namespace _Project.Infrastructure
             Container.BindInterfacesTo<ManualDecisionMaker>().AsSingle();
             Container.BindInterfacesTo<AiRandomDecisionMaker>().AsSingle();
             Container.BindInterfacesAndSelfTo<ViewEventsManager>().AsSingle();
+            
             Container.BindInterfacesTo<SelectEventExecutor>().AsSingle();
             Container.BindInterfacesTo<RestoreStaminaEventExecutor>().AsSingle();
             Container.BindInterfacesTo<DeselectEventExecutor>().AsSingle();

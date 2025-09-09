@@ -33,12 +33,12 @@ namespace _Project
                     if (!_pathSolver.CanReach(source.Node, node, source.Stamina, out Path path))
                         continue;
                     
-                    if (path.Last.Occupant != source)
+                    if (path.Last.Occupant != null && path.Last.Occupant != source)
                         continue;
                     
                     if (source.Stamina < path.Stamina + source.AttackStamina)
                         continue;
-
+                    
                     decisions.Add(new AttackDecision(source, enemy, path, _viewEvents, enemies));
                 }
             }

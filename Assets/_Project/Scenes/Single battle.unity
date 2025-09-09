@@ -1384,6 +1384,7 @@ MonoBehaviour:
   _enemiesPlaces: {fileID: 11400000, guid: e61062ce22b1e5440bb68ca058587251, type: 2}
   _skipButton: {fileID: 1301807807}
   _gameOverUi: {fileID: 517653848}
+  _decisionMakersMap: {fileID: 11400000, guid: 079fcb607860c514cadf395ccd88fe6c, type: 2}
 --- !u!114 &1885575716
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -16,15 +16,18 @@ namespace _Project
 
         public bool CanReach(Node from, Node to, int withStamina, out Path path)
         {
+            if (from == to)
+            {
+                path = new Path(from);
+                return true;
+            }
+            
             path = Find(from, to);
             return !path.IsEmpty && path.Stamina <= withStamina;
         }
 
-        public bool CanReach(Node from, Node to, int withStamina)
-        {
-            Path path = Find(from, to);
-            return !path.IsEmpty && path.Stamina <= withStamina;
-        }
+        public bool CanReach(Node from, Node to, int withStamina) => 
+            CanReach(from, to, withStamina, out _);
 
         private Path ReconstructPath(Dictionary<Node, Node> cameFrom, Node start, Node end)
         {
@@ -46,7 +49,7 @@ namespace _Project
         private Path Find(Node start, Node end)
         {
             if (start == end)
-                return Path.Empty;
+                return new Path(start);
             
             Queue<Node> queue = new();
             HashSet<Node> visited = new();
@@ -73,7 +76,7 @@ namespace _Project
                 }
             }
 
-            return Path.Empty;
+            return Path.Invalid;
         }
     }
 }

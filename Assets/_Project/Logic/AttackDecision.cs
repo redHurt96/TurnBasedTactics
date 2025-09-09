@@ -1,14 +1,11 @@
-﻿using _Pathfinding.Common;
-using UnityEngine;
-
-namespace _Project
+﻿namespace _Project
 {
     public class AttackDecision : IDecision
     {
+        public readonly Path Path; 
+        public readonly Character Target;
         private readonly MoveDecision _moveDecision;
         private readonly Character _source;
-        private readonly Character _target;
-        private readonly Path _path;
         private readonly ViewEventsQueue _viewEvents;
         private readonly CharactersRepository _enemies;
 
@@ -19,24 +16,26 @@ namespace _Project
             ViewEventsQueue viewEvents,
             CharactersRepository enemies)
         {
+            Path = path;
             _source = source;
-            _target = target;
-            _path = path;
+            Target = target;
             _viewEvents = viewEvents;
             _enemies = enemies;
-            _moveDecision = new MoveDecision(source, path, viewEvents);
+            
+            if (!path.IsEmpty)
+                _moveDecision = new MoveDecision(source, path, viewEvents);
         }
 
         public void Execute()
         {
-            _moveDecision.Execute();
-            _source.Attack(_target);
-            _viewEvents.Enqueue(new AttackEvent(_source, _target));
+            _moveDecision?.Execute();
+            _source.Attack(Target);
+            _viewEvents.Enqueue(new AttackEvent(_source, Target));
             
-            if (_target.IsDead)
+            if (Target.IsDead)
             {
-                _viewEvents.Enqueue(new DieEvent(_target));
-                _enemies.Remove(_target);
+                _viewEvents.Enqueue(new DieEvent(Target));
+                _enemies.Remove(Target);
             }
         }
     }

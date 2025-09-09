@@ -35,7 +35,7 @@ namespace _Project
                 await UniTask.WhenAny(
                 _gridView.WaitForClick(tokenSource.Token),
                 _skipButton.WaitForClick(tokenSource.Token),
-                _attackAwaiter.WaitForClick(source, tokenSource.Token));
+                _attackAwaiter.WaitForClick(source, enemies, tokenSource.Token));
             
             tokenSource.Cancel();
 

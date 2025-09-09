@@ -13,7 +13,7 @@ namespace _Project
         [Inject] private Grid _grid;
         [Inject] private IPathSolver _pathSolver;
         [Inject] private ViewEventsQueue _viewEventsQueue;
-        [Inject] private IDecisionMaker _decisionMaker;
+        [Inject] private DecisionMakersMapper _decisionMakersMapper;
         
         private Character _current;
 
@@ -36,12 +36,15 @@ namespace _Project
             {
                 _current = queue.Dequeue();
                 RestoreStamina();
-
                 IDecision decision;
+
+                await UniTask.WaitUntil(() => _viewEventsQueue.IsEmpty);
+                
                 do
                 {
                     Select(_current);
-                    decision = await _decisionMaker.Execute(_current, currentEnemies);
+                    IDecisionMaker decisionMaker = _decisionMakersMapper.Get(currentCharacters.Team);
+                    decision = await decisionMaker.Execute(_current, currentEnemies);
                     decision.Execute();
                 } while (_current.Stamina > 0 && !_current.IsDead && decision is not SkipDecision);
 
